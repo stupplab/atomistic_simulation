@@ -4,9 +4,9 @@ integrator              = md        ; leap-frog integrator
 nsteps                  = 50000000   ; 2 * 50000000 = 100000 ps (100 ns)
 dt                      = 0.002     ; 2 fs
 ; Output control
-nstenergy               = 5000      ; save energies every 10.0 ps
-nstlog                  = 5000      ; update log file every 10.0 ps
-nstxout-compressed      = 5000      ; save coordinates every 10.0 ps
+nstenergy               = 50000      ; save energies every 100.0 ps
+nstlog                  = 50000      ; update log file every 100.0 ps
+nstxout-compressed      = 50000      ; save coordinates every 100.0 ps
 ; Bond parameters
 continuation            = yes       ; continuing from NPT 
 constraint_algorithm    = lincs     ; holonomic constraints 
