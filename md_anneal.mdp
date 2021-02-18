@@ -7,6 +7,7 @@ dt                      = 0.002     ; 2 fs
 nstenergy               = 50000      ; save energies every 100.0 ps
 nstlog                  = 50000      ; update log file every 100.0 ps
 nstxout-compressed      = 50000      ; save coordinates every 100.0 ps
+xtc_precision           = 100
 ; Bond parameters
 continuation            = yes       ; continuing from NPT 
 constraint_algorithm    = lincs     ; holonomic constraints 
