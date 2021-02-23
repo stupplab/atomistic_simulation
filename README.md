@@ -6,7 +6,7 @@ It will create a folder simulation for the simulation instance of the defined pa
 # Note
 
 Remember to add the custom made PA residues `C16` `C12` `12C` `SPI` to `residuetypes.dat`. On macos, this should be located as 
-`/usr/local/gromacs/share/gromacs/top/residuetypes.dat`
+`/usr/local/gromacs/share/gromacs/top/residuetypes.dat`\
 In this file add lines
 ```
 C16 Protein
