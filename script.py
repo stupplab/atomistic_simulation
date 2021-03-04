@@ -1,4 +1,4 @@
-"""Basic Gromacs script for atomistic simulation
+"""Basic Gromacs script for atomistic simulation - Completely Automated
 
 All in all you need the following files to run the conplete simulation:
     - itp and pdb files for the molecule, 
@@ -25,12 +25,12 @@ import utils
 ############################# Simulation parameters #############################
 
 molname = 'PA'
-PA_seq             = 'C16VVAAEE' #+ 'Z' # X:C12, Z:12C
-num_PA             = 22*9
+PA_seq             = 'C16VAEVAE' #+ 'Z' # X:C12, Z:12C
+num_PA             = 12
 # residuecharge_PA1  = [['E',0], ['E',-1]]
-Lx                 = 12
-Ly                 = 12
-Lz                 = 12
+Lx                 = 2.5 #2.5  # 0.4 x 6
+Ly                 = 2.5 #2.5
+Lz                 = 5 #8.5
 topfile            = 'topol.top'
 PA_generic='PA_generic.pdb'
 
@@ -40,6 +40,7 @@ PA_generic='PA_generic.pdb'
 
 #################################### Setup ####################################
 
+#-------------------------------------------------------------------------------
 # Create a directory path for this example and go inside it
 path = os.getcwd()+'/simulation'
 if not os.path.exists(path):
@@ -49,7 +50,7 @@ os.chdir(path)
 utils.generic_to_specific_PA(PA_seq, PA_generic, molname)
 
 utils.make_aa_pdb(molname)
-
+#-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
 # Copy relevant files
@@ -58,14 +59,19 @@ os.system(f'cp -r ../*.mdp ./')
 os.system(f'cp -r ../*run.py ./')
 #-------------------------------------------------------------------------------
 
-
 #------------------------------------------------------------------------------- 
 
 # Generate gro, itp and top files using the pdb file. 
 # Remember this assumes that the force field identifies all the residues in the pdb
-cmd = f'gmx pdb2gmx -f {molname}_aa.pdb -o {molname}.gro -ter -p {topfile} -i {molname}.itp -water spce -ff charmm36-jul2020'
-subprocess.run(cmd, shell=True).check_returncode()
-
+cmd = f'gmx pdb2gmx -f {molname}_aa.pdb -o {molname}.gro -inter -p {topfile} -i {molname}.itp -water spce -ff charmm36-jul2020'
+fw = open("tmpout", "ab")
+p = subprocess.Popen(cmd.split(), stdin=subprocess.PIPE, stdout=fw, stderr=fw, universal_newlines=True)
+p.stdin.write("1\n")
+p.stdin.write("0\n")
+p.stdin.write("3\n")
+p.stdin.write("4\n")
+p.communicate()
+fw.close()
 
 # Convert the pdb to gro
 # cmd = f'gmx editconf -f {molname1}.pdb -o {molname1}.gro'
@@ -73,17 +79,26 @@ subprocess.run(cmd, shell=True).check_returncode()
 
 
 # Randomly insert molecules in a box, generates <molname>_box.gro file
-cmd = f'gmx insert-molecules -box {Lx} {Ly} {Lz} -nmol {num_PA} -ci {molname}.gro -radius 0.2 -o {molname}_box.gro'
+cmd = f'gmx insert-molecules -box 10 10 10 -nmol {num_PA} -ci {molname}.gro -radius 0.0 -try 1000 -o {molname}_box.gro'
 subprocess.run(cmd, shell=True).check_returncode()
-input(f'>>> Manually correct the number of {molname} molecules in the top file to how many are added (See above). \n \
-        Then press ENTER to continue...')
+# correct the box size
+with open(f'{molname}_box.gro', 'r') as f:
+    lines = f.readlines()
+lines[-1] = '%10.5f%10.5f%10.5f\n'%(Lx,Ly,Lz)
+with open(f'{molname}_box.gro', 'w') as f:
+    f.write(''.join(lines))
 
 
+# Update molecules in topfile
+num_atoms = utils.get_num_atoms_fromGRO(f'{molname}.gro') 
+num_molecules = int( utils.get_num_atoms_fromGRO('PA_box.gro')  / num_atoms )
+utils.update_num_molecules_in_topfile(molname='Protein', topfile=topfile, num_molecules=num_molecules)
 
-# Change the random positions of the PA to an initial configuration
+
+# # Change the random positions of the PA to an initial configuration
 num_atoms = utils.get_num_atoms_fromGRO('PA.gro')
 num_molecules = utils.get_num_molecules_fromtop('topol.top', molname='Protein')
-utils.init_fiber_config(
+utils.init_lamella_config(
     'PA_box.gro', 
     num_atoms, num_molecules,
     Lx,Ly,Lz,
@@ -92,21 +107,20 @@ utils.init_fiber_config(
     C_indices=[0,2])
 
 
-
 # Solvate the box, generates <molname>_water.gro
 cmd = f'gmx solvate -cp {molname}_box.gro -cs spc216.gro -p topol.top -o {molname}_water.gro'
 subprocess.run(cmd, shell=True).check_returncode()
-input(f'>>> Check the number of solvent molecules added in the top file is correct (See above). \n \
-        Then press ENTER to continue...')
 
 # Add ions
 cmd = f'gmx grompp -f ions.mdp -c {molname}_water.gro -p topol.top -o ions.tpr'
 subprocess.run(cmd, shell=True).check_returncode()
 # Make changes in the below cmd to add extra ions apart from what needed for neutralization)
 cmd = f'gmx genion -s ions.tpr -o {molname}_water.gro -p topol.top -pname NA -nname CL -neutral'
-subprocess.run(cmd, shell=True).check_returncode()
-input(f'>>> Check if the number of ions added in the top file is correct (See above). \n \
-        Then press ENTER to continue...')
+fw = open("tmpout", "ab")
+p = subprocess.Popen(cmd.split(), stdin=subprocess.PIPE, stdout=fw, stderr=fw, universal_newlines=True)
+p.stdin.write("13\n")
+p.communicate()
+fw.close()
 
 
 
@@ -122,5 +136,3 @@ input(f'>>> Check if the number of ions added in the top file is correct (See ab
 os.system('rm \#*') 
 
 #-------------------------------------------------------------------------------
-
-
