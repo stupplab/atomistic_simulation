@@ -581,7 +581,144 @@ def init_lamella_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_fro
         f.write(data)
         
 
+def init_bilayer_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_nth_atom=0, invert=False, C_indices=[0,2]):
+    """ Change the random positioning in grofile with lamella membrane like initial config
+    assumes all molecules are in contiguous in the grofile.
+    All molecules are arranged parallel to each other
+    Note: start_from_nth_atom starts from index 0, whereas in grofile atom index starts from 1
+    Assumes first residue is C
+    C_indices: Carbon indices to use when aligning. 
+    Vector C_indices[1]-C_indices[0] is used.
+    If invert is true, the other end is pointed towards fiber inside
+    """
+    use_one_less = False
+    if num_molecules%2!=0:
+        use_one_less = True
+        num_molecules = int(num_molecules/2)+1
+    else:
+        num_molecules = int(num_molecules/2)
+    
 
+    # Parameters for the initial configuration as a fiber 
+    num_PA_layer = int(np.sqrt(num_molecules))
+    # theta = np.pi*40/180 # angle between two PA in a layer
+    # theta_offset = np.pi*20/180
+    delta = 0.4 # distance between molecules in nm
+    # radial_offset = 0.5 # in nm
+
+
+    # Molecule's atoms' positions. Read from grofile
+    atoms_positions = []
+    with open(grofile, 'r') as f:
+        lines = f.readlines()
+        start = False
+        C_pos = []
+        for line in lines[2:]:
+            words = line.split()
+            try:
+                float(words[-1])
+            except:
+                continue
+            if len(words)<4:
+                continue
+
+            index = int(line[-30:-25])
+            if index == start_from_nth_atom+1:
+                start = True
+            if start:
+                if len(atoms_positions) == num_atoms:
+                    break
+                atoms_positions += [ [float(words[-3]), float(words[-2]), float(words[-1])] ]
+                if 'C' == words[1][0]:
+                    C_pos += [ atoms_positions[-1] ]
+    
+    if invert:
+        atoms_positions = np.array(atoms_positions)[::-1]
+    else:
+        atoms_positions = np.array(atoms_positions)
+
+    # Translate with origin at outermost (C16) Carbon of alkyl tail
+    atoms_positions -= atoms_positions[C_indices[0]]
+
+    # Align atoms_positions in the x-y plane by aligning the vector 
+    # between first two consecutive C atoms of C16 towards x-axis
+    # NOTE: Assumes the first atoms is C16
+    v = np.array(C_pos[C_indices[1]]) - np.array(C_pos[C_indices[0]])
+    q = quaternion.q_between_vectors(v, [0,0,1])
+    for i,pos in enumerate(atoms_positions):
+        atoms_positions[i] = quaternion.qv_mult(q, pos)
+    
+        
+    C_positions = []  # of the outermost C
+    quaternions = [] # wrt when PAM chain is oriented in x-axis
+    for i in range(num_molecules):
+        j = i  % num_PA_layer
+        k = i // num_PA_layer
+        
+        q = [1,0,0,0] #quaternion.axisangle_to_q([0,0,1], theta * j + theta_offset * (1+(-1)^k)/2 )
+        quaternions += [q]
+
+        pos = np.array([j*delta, k*delta, 0]) #+ quaternion.qv_mult(q, [radial_offset,0,0])
+        C_positions += [ pos ]
+
+
+    # Calculate positions of all atoms
+    positions = []
+    for i in range(num_molecules):
+        for j,pos in enumerate(atoms_positions):
+            p = quaternion.qv_mult(quaternions[i], pos)
+            p += C_positions[i]
+            positions += [ p ]
+    
+    # add bottom layer of bilayer
+    q = quaternion.axisangle_to_q([0,1,0], np.pi )
+    positions_=[]
+    for i in range(num_molecules):
+        for j in range(num_atoms):
+            pos = np.copy(positions[i*num_atoms+j])
+            positions_ += [ np.array([0,0,-0.1]) + C_positions[i] + quaternion.qv_mult(q, pos-C_positions[i]) ]
+    
+    if use_one_less:
+        positions += positions_[:-1*num_atoms]
+    else:
+        positions += positions_
+
+    positions = np.array(positions) - np.mean(positions, axis=0) +[Lx/2,Ly/2,Lz/2]
+    
+
+    if invert:
+        positions = positions[::-1]
+
+    # Write new atom positions in the grofile
+    new_lines = []
+    n=0
+    with open(grofile, 'r') as f:
+        lines = f.readlines()
+
+        for line in lines:
+            words = line.split()
+            try:
+                float(words[-1])
+            except:
+                new_lines += [line]
+                continue
+            if len(words)<4:
+                new_lines += [line]
+                continue
+            
+            index = int(line[-30:-25])
+            if (index < start_from_nth_atom+1) or (n>=len(positions)):
+                new_lines += [line]
+            else:
+                line_ = line[:-25]+'%8.3f%8.3f%8.3f\n'%tuple(positions[n])
+                new_lines += [line_]
+                n=n+1
+
+    data = ''.join(new_lines)
+    with open('PA_box.gro', 'w') as f:    
+        f.write(data)
+    
+    
 def get_num_atoms_fromGRO(filename):
     # Returns the number in the 2nd line of grofile
 
