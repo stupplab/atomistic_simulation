@@ -1,7 +1,20 @@
 This repository contains all you need top run the atomistic simulations of PAs.
 
 `script.py` is the main script that is run first. Look inside to see how it works and how the parameters are defined.
-It will create a folder simulation for the simulation instance of the defined parameters.
+It will create a folder simulation for the simulation instance of the defined parameters and automatically interacts with the command line input using subprocess Popen. 
+
+Essential folder/files (basically means that you don't need to change them):
+- charmm36-jul2020.ff
+- quaternion.py
+- utils.py
+- top_all36_prot_forPAs.rtf
+- PA_generic.pdb (for C16 PAs and peptides)
+
+Custom files (You probably need to tune them based on your use case)
+- script.py
+- *.mdp
+- jobscript.sh
+- run.py / rerun.py
 
 # Note
 

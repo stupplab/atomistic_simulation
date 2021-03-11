@@ -16138,7 +16138,7 @@ CT3		 HS   2		0.233942
        X      CN3     CN3C        X     9   180.000000     0.418400     2
        X      NN2     CN3C        X     9   180.000000     0.418400     2
        X      ON4       P4        X     9     0.000000     1.255200     3
-
+       NH1      C    CG321      CT2     9   180.000000     1.673600     1 ; <-- Added by Mayank Agrawal for RES C16 -->
 
 [ dihedraltypes ]
 ; 'improper' dihedrals 
