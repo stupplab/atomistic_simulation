@@ -28,3 +28,10 @@ C12 Protein
 SPI Protein
 ```
 
+
+For a new molecule (`drug.mol2`) generate the force field using the following site \
+https://cgenff.umaryland.edu/initguess/
+It will generate `drug.str` file containing the force field parameters.
+To generate the GROMACS comapatible parameters files, download `cgenff_charmm2gmx.py` from https://cgenff.umaryland.edu/commonFiles/utility.php \
+Used as `./cgenff_charmm2gmx.py <RESNAME> drug.mol2 drug.str charmm36.ff` 
+

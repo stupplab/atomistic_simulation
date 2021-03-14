@@ -174,7 +174,8 @@ def update_num_molecules_in_topfile(molname, topfile, num_molecules):
 
 
 
-def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_nth_atom=0, invert=False, C_indices=[0,2]):
+def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_nth_atom=0, invert=False, C_indices=[0,2],
+    delta = 0.5, radial_offset = 0.5):
     """ Change the random positioning in grofile with fiber like initial config
     assumes all molecules are in contiguous in the grofile
     Note: start_from_nth_atom starts from index 0, whereas in grofile atom index starts from 1
@@ -182,6 +183,9 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
     C_indices: Carbon indices to use when aligning. 
     Vector C_indices[1]-C_indices[0] is used.
     If invert is true, the other end is pointed towards fiber inside
+    
+    delta: distance between layers in nm
+    radial_offset: distance form the center to inner PA tip 
     """
 
 
@@ -189,8 +193,6 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
     num_PA_layer = 9
     theta = np.pi*40/180 # angle between two PA in a layer
     theta_offset = np.pi*20/180
-    delta = 0.5 # distance between layers in nm
-    radial_offset = 0.5 # in nm
 
 
     # Molecule's atoms' positions. Read from grofile
@@ -292,7 +294,8 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
 
 
 
-def init_fiber_config_co(grofile, num_atomss, num_moleculess, Lx, Ly, Lz, start_from_nth_atoms, inverts, C_indicess):
+def init_fiber_config_co(grofile, num_atomss, num_moleculess, Lx, Ly, Lz, start_from_nth_atoms, inverts, C_indicess,
+    delta = 0.5, radial_offset = 0.5):
     """ Change the random positioning in grofile with fiber like initial config
     assumes all molecules are in contiguous in the grofile
     Note: start_from_nth_atom starts from index 0, whereas in grofile atom index starts from 1
@@ -305,6 +308,9 @@ def init_fiber_config_co(grofile, num_atomss, num_moleculess, Lx, Ly, Lz, start_
     which_mol are indices of molecules in grofiles corresponding to mol_start_atom_indices
     mol_indices are molecule number in the grofile
 
+    delta = 0.5 # distance between layers in nm
+    radial_offset = 0.5 # in nm
+
     NOTE: VERY ARDOUS CODE. NOT HAPPY
     """
 
@@ -313,9 +319,7 @@ def init_fiber_config_co(grofile, num_atomss, num_moleculess, Lx, Ly, Lz, start_
     num_PA_layer = 9
     theta = np.pi*40/180 # angle between two PA in a layer
     theta_offset = np.pi*20/180
-    delta = 0.5 # distance between layers in nm
-    radial_offset = 0.5 # in nm
-
+    
 
     atoms_positionss = []
     C_idss = []  # C_ids contain atom number of C in atom positions
