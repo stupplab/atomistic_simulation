@@ -243,7 +243,7 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
         j = i  % num_PA_layer
         k = i // num_PA_layer
         
-        q = quaternion.axisangle_to_q([0,0,1], theta * j + theta_offset * (1+(-1)^k)/2 )
+        q = quaternion.axisangle_to_q([0,0,1], theta * j + theta_offset * (1+(-1)**k)/2 )
         quaternions += [q]
 
         pos = np.array([0,0,k*delta]) + quaternion.qv_mult(q, [radial_offset,0,0])
@@ -383,12 +383,12 @@ def init_fiber_config_co(grofile, num_atomss, num_moleculess, Lx, Ly, Lz, start_
         j = i  % num_PA_layer
         k = i // num_PA_layer
         
-        q = quaternion.axisangle_to_q([0,0,1], theta * j + theta_offset * (1+(-1)^k)/2 )
+        q = quaternion.axisangle_to_q([0,0,1], theta * j + theta_offset * (1+(-1)**k)/2 )
         quaternions += [q]
 
         pos = np.array([0,0,k*delta]) + quaternion.qv_mult(q, [radial_offset,0,0])
         C_positions += [ pos ]
-
+    
 
     # randomly arrange molecules
     args = np.arange(sum(num_moleculess))
@@ -535,7 +535,7 @@ def init_lamella_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_fro
         j = i  % num_PA_layer
         k = i // num_PA_layer
         
-        q = [1,0,0,0] #quaternion.axisangle_to_q([0,0,1], theta * j + theta_offset * (1+(-1)^k)/2 )
+        q = [1,0,0,0]
         quaternions += [q]
 
         pos = np.array([j*delta, k*delta, 0]) #+ quaternion.qv_mult(q, [radial_offset,0,0])
@@ -659,7 +659,7 @@ def init_bilayer_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_fro
         j = i  % num_PA_layer
         k = i // num_PA_layer
         
-        q = [1,0,0,0] #quaternion.axisangle_to_q([0,0,1], theta * j + theta_offset * (1+(-1)^k)/2 )
+        q = [1,0,0,0]
         quaternions += [q]
 
         pos = np.array([j*delta, k*delta, 0]) #+ quaternion.qv_mult(q, [radial_offset,0,0])
