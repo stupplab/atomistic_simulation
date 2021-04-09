@@ -2,7 +2,7 @@
 
 
 import numpy as np
-import quaternion
+from . import quaternion
 
 import os, subprocess
 
