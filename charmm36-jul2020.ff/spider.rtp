@@ -1,0 +1,162 @@
+;
+; This section is build for protein-polymer simulations 
+;
+[ bondedtypes ]
+; Col 1: Type of bond
+; Col 2: Type of angles
+; Col 3: Type of proper dihedrals
+; Col 4: Type of improper dihedrals
+; Col 5: Generate all dihedrals if 1, only heavy atoms of 0.
+; Col 6: Number of excluded neighbors for nonbonded interactions
+; Col 7: Generate 1,4 interactions between pairs of hydrogens if 1
+; Col 8: Remove propers over the same bond as an improper if it is 1
+; bonds  angles  dihedrals  impropers all_dihedrals nrexcl HH14 RemoveDih
+     1       5          9        2        1           3      1     0
+
+;-------------------------------------------------------------------------------------
+; The following are for polypeptide brush. Aug. 2, 2019
+;-------------------------------------------------------------------------------------
+; Author: Mayank Agrawal
+
+
+[ SPI ]
+ [ atoms ]
+    F1    FGA3   -0.140    1
+    F2    FGA3   -0.140    2
+    F3    FGA3   -0.140    3
+    F4    FGA3   -0.140    4
+    F5    FGA3   -0.140    5
+    F6    FGA3   -0.140    6
+    F7    FGA3   -0.140    7
+    F8    FGA3   -0.140    8
+    F9    FGA3   -0.140    9
+   F10    FGA3   -0.140   10
+   F11    FGA3   -0.140   11
+   F12    FGA3   -0.140   12
+   F13    FGA3   -0.140   13
+   F14    FGA3   -0.140   14
+   F15    FGA3   -0.140   15
+   F16    FGA3   -0.140   16
+   F17    FGA3   -0.140   17
+   F18    FGA3   -0.140   18
+   F19    FGA3   -0.140   19
+   F20    FGA3   -0.140   20
+   F21    FGA3   -0.140   21
+   F22    FGA3   -0.140   22
+   F23    FGA3   -0.140   23
+   F24    FGA3   -0.140   24
+   F25    FGA3   -0.140   25
+   F26    FGA3   -0.140   26
+   F27    FGA3   -0.140   27
+    O1   OG301   -0.320   28
+    O2   OG301   -0.320   29
+    O3   OG301   -0.358   30
+    O4   OG301   -0.320   31
+    C1   CG301    0.020   32
+    C2   CG321    0.099   33
+    C3   CG321    0.099   34
+    C4   CG321    0.099   35
+    C5   CG321    0.003   36
+    C6   CG301    0.174   37
+    C7   CG301    0.174   38
+    C8   CG321   -0.019   39
+    C9   CG301    0.174   40
+   C10   CG302    0.374   41
+   C11   CG302    0.374   42
+   C12   CG302    0.374   43
+   C13   CG302    0.374   44
+   C14   CG302    0.374   45
+   C15   CG302    0.374   46
+   C16   CG302    0.374   47
+   C17   CG302    0.374   48
+   C18   CG302    0.374   49
+    H1    HGA2    0.090   50
+    H2    HGA2    0.090   51
+    H3    HGA2    0.090   52
+    H4    HGA2    0.090   53
+    H5    HGA2    0.090   54
+    H6    HGA2    0.090   55
+    H7    HGA2    0.090   56
+    H8    HGA2    0.090   57
+   C19   CG321   -0.183   58
+    H9    HGA2    0.090   59
+   H10    HGA2    0.090   60
+   H11    HGA2    0.090   61
+   H12    HGA2    0.090   62
+     C       C    0.522   63
+     O       O   -0.510   64
+;   C20   CG2O2    0.769   61
+;    O5   OG2D1   -0.562   64
+;    O6   OG311   -0.603   65
+;   H13    HGP1    0.430   66
+
+    
+ [ bonds ]
+    F1   C14
+    F2   C14  
+    F3   C14  
+    F4   C15
+    F5   C15
+    F6   C15
+    F7   C13
+    F8   C13
+    F9   C13
+   F10   C18
+   F11   C18
+   F12   C18
+   F13   C17
+   F14   C17
+   F15   C17
+   F16   C16
+   F17   C16
+   F18   C16
+   F19   C10
+   F20   C10
+   F21   C10
+   F22   C11
+   F23   C11
+   F24   C11
+   F25   C12
+   F26   C12
+   F27   C12
+    O1    C3
+    O1    C6
+    O2    C2
+    O2    C9
+    O3    C5
+    O3    C8
+    O4    C4
+    O4    C7
+    C1    C2
+    C1    C3
+    C1    C4
+    C1    C5
+    C2    H8
+    C2    H7
+    C3    H1
+    C3    H2
+    C4    H3
+    C4    H4
+    C5    H5
+    C5    H6
+    C6   C10
+    C6   C11
+    C6   C12
+    C7   C13
+    C7   C14
+    C7   C15
+    C9   C16
+    C9   C17
+    C9   C18
+   C19    C8 
+    C8    H9 
+    C8   H10
+   C19     C
+   C19   H11
+   C19   H12
+     C     O
+     C    +N
+ [ impropers ]
+     C    C19   +N     O
+ [ cmap ]
+    

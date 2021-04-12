@@ -1,0 +1,13 @@
+SPI  12
+1       6       H3      C4      C1      O4
+1       6       H4      C4      C1      O4
+1       6       H1      C3      C1      O1
+1       6       H2      C3      C1      O1
+1       6       H7      C2      C1      O2
+1       6       H8      C2      C1      O2
+1       6       H5      C5      C1      O3 
+1       6       H6      C5      C1      O3 
+1       6       H9      C8     C19      O3 
+1       6      H10      C8     C19      O3 
+1       6      H11     C19      C8       C                     
+1       6      H12     C19      C8       C     

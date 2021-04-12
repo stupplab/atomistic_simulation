@@ -197,6 +197,7 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
 
     # Molecule's atoms' positions. Read from grofile
     atoms_positions = []
+    C_ids = []  # C_ids contain atom number of C in atom positions
     with open(grofile, 'r') as f:
         lines = f.readlines()
         start = False
@@ -219,19 +220,21 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
                 atoms_positions += [ [float(words[-3]), float(words[-2]), float(words[-1])] ]
                 if 'C' == words[1][0]:
                     C_pos += [ atoms_positions[-1] ]
+                    C_ids += [len(atoms_positions)-1]
     
     if invert:
-        atoms_positions = np.array(atoms_positions)[::-1]
+        atoms_positions = np.array(atoms_positions)#[::-1]
+        C_ids = C_ids[::-1]
     else:
         atoms_positions = np.array(atoms_positions)
 
     # Translate with origin at outermost (C16) Carbon of alkyl tail
-    atoms_positions -= atoms_positions[C_indices[0]]
+    atoms_positions -= atoms_positions[C_ids[C_indices[0]]]
 
     # Align atoms_positions in the x-y plane by aligning the vector 
     # between first two consecutive C atoms of C16 towards x-axis
     # NOTE: Assumes the first atoms is C16
-    v = np.array(C_pos[C_indices[1]]) - np.array(C_pos[C_indices[0]])
+    v = np.array(atoms_positions[C_ids[C_indices[1]]]) - np.array(atoms_positions[C_ids[C_indices[0]]])
     q = quaternion.q_between_vectors(v, [1,0,0])
     for i,pos in enumerate(atoms_positions):
         atoms_positions[i] = quaternion.qv_mult(q, pos)
@@ -260,8 +263,8 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
     positions = np.array(positions) - np.mean(positions, axis=0) +[Lx/2,Ly/2,Lz/2]
     
     
-    if invert:
-        positions = positions[::-1]
+    # if invert:
+    #     positions = positions[::-1]
 
     # Write new atom positions in the grofile
     new_lines = []
@@ -289,7 +292,7 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
                 n=n+1
 
     data = ''.join(new_lines)
-    with open('PA_box.gro', 'w') as f:    
+    with open(grofile, 'w') as f:    
         f.write(data)
 
 
