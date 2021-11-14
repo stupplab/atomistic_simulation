@@ -470,7 +470,8 @@ def init_fiber_config_co(grofile, num_atomss, num_moleculess, Lx, Ly, Lz, start_
         f.write(data)
 
         
-def init_lamella_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_nth_atom=0, invert=False, C_indices=[0,2]):
+def init_lamella_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_nth_atom=0, invert=False, C_indices=[0,2],
+    delta=0.4):
     """ Change the random positioning in grofile with lamella membrane like initial config
     assumes all molecules are in contiguous in the grofile.
     All molecules are arranged parallel to each other
@@ -479,6 +480,8 @@ def init_lamella_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_fro
     C_indices: Carbon indices to use when aligning. 
     Vector C_indices[1]-C_indices[0] is used.
     If invert is true, the other end is pointed towards fiber inside
+
+    delta: distance between molecules in nm
     """
 
 
@@ -486,7 +489,7 @@ def init_lamella_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_fro
     num_PA_layer = int(np.sqrt(num_molecules))
     # theta = np.pi*40/180 # angle between two PA in a layer
     # theta_offset = np.pi*20/180
-    delta = 0.4 # distance between molecules in nm
+    # delta = 0.4 # distance between molecules in nm
     # radial_offset = 0.5 # in nm
 
 
