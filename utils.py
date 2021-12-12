@@ -587,7 +587,7 @@ def init_lamella_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_fro
                 n=n+1
 
     data = ''.join(new_lines)
-    with open('PA_box.gro', 'w') as f:    
+    with open(grofile, 'w') as f:    
         f.write(data)
         
 
@@ -725,7 +725,7 @@ def init_bilayer_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_fro
                 n=n+1
 
     data = ''.join(new_lines)
-    with open('PA_box.gro', 'w') as f:    
+    with open(grofile, 'w') as f:
         f.write(data)
     
     
