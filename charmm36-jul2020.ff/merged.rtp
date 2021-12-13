@@ -7909,6 +7909,7 @@
 	   CZ     C    0.640 15
 	  NH1   NC2   -0.800 16
 	 HH11    HC    0.420 17
+	 HH12    HC    0.000 17  ; these charges are set by guessing
 	  NH2   NC2   -0.900 18  ; these charges are set by guessing
 	 HH21    HC    0.260 19
 	 HH22    HC    0.260 20
@@ -7933,8 +7934,8 @@
 	   CD   HD1
 	   CD   HD2
 	   NE    HE
-	  NH1  HH11
-	  ;NH1  HH12
+	  NH1   HH1
+	  NH1  HH12
 	  NH2  HH21
 	  NH2  HH22
 	    O     C
@@ -7943,7 +7944,7 @@
 	    N    -C    CA    HN
 	    C    CA    +N     O
 	   CZ   NH1   NH2    NE
-	  ; NH1  HH11  HH12    CZ
+	  NH1  HH11  HH12    CZ
 	  NH2  HH21  HH22    CZ
   [ cmap ]
 	   -C     N    CA     C    +N
@@ -61668,9 +61669,10 @@
 		CE		CT2		0.13	13
 		HE1		HA2		0.075	14
 		HE2		HA2		0.075	15
-		NZ		NH2		-0.96	16
+		NZ		NH3		-0.96	16
 		HZ1		HC		0.34	17
 		HZ2		HC		0.34	18
+		HZ3		HC		0.0	    18 ; added by Mayank Agrawal
 		C		C		0.51	19
 		O		O		-0.51	20
  [ bonds ]
@@ -61695,6 +61697,7 @@
 		O		C
 		NZ		HZ1
 		NZ		HZ2
+		NZ      HZ3
  [ impropers ]
 		N		-C		CA	   HN
 		C		CA		+N		O
