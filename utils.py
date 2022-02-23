@@ -298,7 +298,7 @@ def init_fiber_config(grofile, num_atoms, num_molecules, Lx, Ly, Lz, start_from_
 
 
 def init_fiber_config_co(grofile, num_atomss, num_moleculess, Lx, Ly, Lz, start_from_nth_atoms, inverts, C_indicess,
-    delta = 0.5, radial_offset = 0.5):
+    delta = 0.5, radial_offset = 0.5, num_PA_layer=9, theta=np.pi * 40/180, theta_offset = np.pi*20/180):
     """ Change the random positioning in grofile with fiber like initial config
     assumes all molecules are in contiguous in the grofile
     Note: start_from_nth_atom starts from index 0, whereas in grofile atom index starts from 1
@@ -319,9 +319,9 @@ def init_fiber_config_co(grofile, num_atomss, num_moleculess, Lx, Ly, Lz, start_
 
 
     # Parameters for the initial configuration as a fiber 
-    num_PA_layer = 9
-    theta = np.pi*40/180 # angle between two PA in a layer
-    theta_offset = np.pi*20/180
+    # num_PA_layer = 9
+    # theta = np.pi * 40/180 # angle between two PA in a layer
+    # theta_offset = np.pi*20/180
     
 
     atoms_positionss = []
