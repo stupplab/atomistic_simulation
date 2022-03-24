@@ -1310,39 +1310,39 @@
 #ifdef HEAVY_H
 ; account for larger inertia with heavy hydrogens
 ; constraints for the rigid NH3 groups
-MNH3	 CT1   2	0.191406
-MNH3	 CT2   2	0.191406
-MNH3	 CT3   2	0.191406
-MNH3	MNH3   2	0.165238
+MNH3   CT1   2  0.191406
+MNH3   CT2   2  0.191406
+MNH3   CT3   2  0.191406
+MNH3  MNH3   2  0.165238
 ; constraints for rigid ch3
-MCH3	 CT1   2	0.206892
-MCH3	 CT2   2	0.206000
-MCH3	 CT3   2	0.206179
-MCH3	MCH3   2	0.185689
-MCH3	   S   2	0.233335
+MCH3   CT1   2  0.206892
+MCH3   CT2   2  0.206000
+MCH3   CT3   2  0.206179
+MCH3  MCH3   2  0.185689
+MCH3     S   2  0.233335
 #else
 ; no heavy hydrogens.
 ; constraints for the rigid NH3 groups
-MNH3	 CT1   2	0.159603
-MNH3	 CT2   2	0.159603
-MNH3	 CT3   2	0.159603
-MNH3	MNH3   2	0.082619
+MNH3   CT1   2  0.159603
+MNH3   CT2   2  0.159603
+MNH3   CT3   2  0.159603
+MNH3  MNH3   2  0.082619
 ; constraints for rigid ch3
-MCH3	 CT1   2	0.168122
-MCH3	 CT2   2	0.167162
-MCH3	 CT3   2	0.167354
-MCH3	MCH3   2	0.093582
-MCH3	   S   2	0.195314
+MCH3   CT1   2  0.168122
+MCH3   CT2   2  0.167162
+MCH3   CT3   2  0.167354
+MCH3  MCH3   2  0.093582
+MCH3     S   2  0.195314
 #endif
 ; angle-derived constraints for OH and SH groups in proteins
 ; The constraint A-C is calculated from the angle A-B-C and bonds A-B, B-C.
-CA		  H   2		0.193641
-CD		  H   2		0.200439
-CT1		  H   2		0.192081
-CT2		  H   2		0.192081
-CT3		  H   2		0.192081
-CT2		 HS   2		0.234108
-CT3		 HS   2		0.233942
+CA      H   2   0.193641
+CD      H   2   0.200439
+CT1     H   2   0.192081
+CT2     H   2   0.192081
+CT3     H   2   0.192081
+CT2    HS   2   0.234108
+CT3    HS   2   0.233942
 
 
 
@@ -5138,6 +5138,7 @@ CT3		 HS   2		0.233942
     CTD1      CT2      CT1     5   113.500000   488.272800   0.25610000      9338.69
     CTD1       CD      OH1     5   110.500000   460.240000   0.00000000         0.00
     CTD1      NH1        C     5   120.000000   418.400000   0.00000000         0.00
+       C      NH1        C     5   120.000000   418.400000   0.00000000         0.00 ; Added by Mayank Agrawal for RES SPI ;
      CT2     CTD1        C     5   108.000000   435.136000   0.00000000         0.00
      CT2     CTD1       CC     5   108.000000   435.136000   0.00000000         0.00
      CT2     CTD1       CD     5   108.000000   435.136000   0.00000000         0.00
@@ -5575,6 +5576,7 @@ CT3		 HS   2		0.233942
      HA3      CT3       CY      CPT     9     0.000000     0.836800     3
      HA2      CT2       CY       CA     9     0.000000     0.041840     3
      HA2      CT2       CY      CPT     9     0.000000     0.836800     3
+   CG321        C      NH1        C     9   180.000000     0.836800     1 ; Added by Mayank Agrawal for Res SPI
        C      CT1      NH1        C     9   180.000000     0.836800     1
        C      CT2      NH1        C     9   180.000000     0.836800     1
        C        N      CP1        C     9     0.000000     3.347200     3
@@ -5875,6 +5877,7 @@ CT3		 HS   2		0.233942
        O        C        N      CP3     9   180.000000    11.506000     2
        O        C        N      CP3     9     0.000000     1.255200     4
        O        C      NH1      CT1     9   180.000000    10.460000     2
+       O        C      NH1        C     9   180.000000    10.460000     2 ; Added by Mayank Agrawal for res SPI
        O        C      NH1      CT2     9   180.000000    10.460000     2
        O        C      NH1      CT3     9   180.000000    10.460000     2
        O        C      NH1        H     9   180.000000    10.460000     2
