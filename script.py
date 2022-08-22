@@ -118,7 +118,7 @@ subprocess.run(cmd, shell=True).check_returncode()
 cmd = f'gmx genion -s ions.tpr -o {molname}_water.gro -p topol.top -pname NA -nname CL -neutral'
 fw = open("tmpout", "ab")
 p = subprocess.Popen(cmd.split(), stdin=subprocess.PIPE, stdout=fw, stderr=fw, universal_newlines=True)
-p.stdin.write("13\n")
+p.stdin.write("15\n")
 p.communicate()
 fw.close()
 
