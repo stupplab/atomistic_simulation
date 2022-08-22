@@ -28,9 +28,9 @@ subprocess.run(cmd, shell=True).check_returncode()
 os.system('rm \#*') 
 
 # MD run
-cmd = f'{gmx} grompp -f md.mdp -c npt.gro -t npt.cpt {index} -p topol.top -o md.tpr'
+cmd = f'gmx grompp -f md.mdp -c em.gro -p topol.top -o md.tpr'
 subprocess.run(cmd, shell=True).check_returncode()
-cmd = f'{gmx} mdrun -deffnm md -v -cpt 5'
+cmd = f'gmx mdrun -deffnm md -v -cpt 5'
 #cmd = 'mpirun -np 4 gmx_mpi mdrun -deffnm PA_water_eq -v -cpt 5 -rdd 2.0 -nb gpu -pme gpu -npme 1 -ntomp 4 &> out.log'
 subprocess.run(cmd, shell=True).check_returncode()
 
